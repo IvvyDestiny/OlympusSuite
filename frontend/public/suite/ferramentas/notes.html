@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Bloco de Notas — Olympus</title>
+<link rel="stylesheet" href="/themes.css"><link rel="stylesheet" href="./css/ferramentas.css"></head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand"><div class="logo">NB</div><div><div class="title">Bloco de Notas</div><div class="subtitle">Salve notas localmente — criptografia manual</div></div></div>
+      <div><button class="btn" onclick="Tools.go('index.html')">Voltar</button></div>
+    </header>
+    <main>
+      <div class="tool-hero panel">
+        <div style="flex:1">
+          <h2>Notas rápidas</h2>
+          <p class="muted">Use o painel à direita para gerenciar suas notas; elas são salvas no navegador.</p>
+        </div>
+      </div>
+      <div class="tool-body">
+        <section>
+          <textarea id="noteText" placeholder="Escreva aqui..."></textarea>
+          <div style="margin-top:.75rem;display:flex;gap:.5rem"><button class="btn" id="save">Salvar</button><button class="btn ghost" id="clear">Limpar</button></div>
+        </section>
+        <aside class="panel">
+          <div class="muted">Notas salvas</div>
+          <div id="list"></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+<script src="./js/utils.js"></script>
+<script>
+const key='olympus_notes_v1';
+const listEl=document.getElementById('list');
+const ta=document.getElementById('noteText');
+function refresh(){
+  const items = Tools.loadLocal(key, []);
+  listEl.innerHTML = items.map((it,idx)=>`<div style="margin-bottom:.5rem"><strong>Nota ${idx+1}</strong><div style="color:var(--muted);font-size:.9rem">${new Date(it.t).toLocaleString()}</div><div style="margin-top:.25rem">${it.text.slice(0,200)}</div><div style="margin-top:.25rem"><button class="small btn ghost" onclick="load(${idx})">Abrir</button> <button class="small btn" onclick="del(${idx})">Excluir</button></div></div>`).join('') || '<div class="muted">Nenhuma nota.</div>';
+}
+function save(){
+  const txt=ta.value.trim(); if(!txt) return alert('Texto vazio');
+  const items = Tools.loadLocal(key, []);
+  items.unshift({t:Date.now(), text:txt});
+  Tools.saveLocal(key, items);
+  ta.value=''; refresh();
+}
+function load(i){
+  const items = Tools.loadLocal(key, []); ta.value = items[i].text||'';
+}
+function del(i){ const items = Tools.loadLocal(key, []); items.splice(i,1); Tools.saveLocal(key, items); refresh(); }
+document.getElementById('save').addEventListener('click', save);
+document.getElementById('clear').addEventListener('click', ()=>ta.value='');
+refresh();
+</script>
+</body>
+</html>

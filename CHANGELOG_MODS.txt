@@ -1,0 +1,12 @@
+CHANGELOG - Olympus Suite Modificações
+=====================================
+
+1. Removidos rodapés estáticos dos HTMLs (injeção via JS)
+2. Removidos menus embutidos duplicados (exceto menu.html)
+   - Menus alternativos foram preservados em /originals/
+3. Criado loader JS para injetar menu.html e footer.html
+4. Consolidado CSS em style.css (raiz), exceto login.css
+5. Criado themes.css com estrutura de temas baseada nos CSS antigos
+6. Adicionado suporte a troca de temas via menu
+7. Scripts criados: components-loader.js, theme-sync.js
+

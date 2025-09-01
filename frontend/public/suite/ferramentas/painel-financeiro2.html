@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Financeiro Olympus</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #eef4ff, #ffffff);
+      color: #333;
+    }
+
+    body::-webkit-scrollbar {
+      width: 12px;
+    }
+    body::-webkit-scrollbar-thumb {
+      background: url('olympus-textura.jpg');
+      background-size: cover;
+      border-radius: 6px;
+    }
+
+    header iframe {
+      width: 100%;
+      height: 60px;
+      border: none;
+    }
+
+    main {
+      max-width: 850px;
+      margin: 80px auto 40px;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #0056b3;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .linha {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: linear-gradient(to right, #007BFF, #00A1FF);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #0056b3, #0083cc);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background: #f0f8ff;
+    }
+
+    #total, #totaisPorCategoria {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: right;
+      font-size: 1.05rem;
+    }
+
+    #exportarTexto {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      font-size: 0.5rem;
+      color: transparent;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <iframe src="./menu-superior.html"></iframe>
+  </header>
+
+  <main>
+    <h1>Painel Financeiro Olympus</h1>
+
+    <div class="linha">
+      <input type="text" id="descricao" placeholder="Descrição do gasto" />
+      <input type="number" id="valor" placeholder="Valor (R$)" />
+      <select id="categoria">
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Moradia</option>
+        <option>Lazer</option>
+        <option>Outros</option>
+      </select>
+      <button onclick="adicionarGasto()">Adicionar</button>
+    </div>
+
+    <div class="linha">
+      <select id="filtroCategoria" onchange="filtrarCategoria()">
+        <option value="">📂 Ver todas as categorias</option>
+        <option value="Alimentação">Alimentação</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Moradia">Moradia</option>
+        <option value="Lazer">Lazer</option>
+        <option value="Outros">Outros</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>🗓️ Data</th>
+          <th>📝 Descrição</th>
+          <th>💸 Valor</th>
+          <th>📂 Categoria</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaGastos"></tbody>
+    </table>
+
+    <div id="total">Total: R$ 0.00</div>
+    <div id="totaisPorCategoria"></div>
+
+    <div id="exportarTexto">
+      <button onclick="exportarGastos()">📋 Copiar Relatório</button>
+    </div>
+  </main>
+
+  <footer>
+    Versão 2.0.0 - Painel Financeiro com Filtros e Exportação - Atualizado em 21/07/2025
+  </footer>
+
+  <script>
+    let gastos = [];
+
+    function adicionarGasto() {
+      const descricao = document.getElementById("descricao").value.trim();
+      const valor = parseFloat(document.getElementById("valor").value);
+      const categoria = document.getElementById("categoria").value;
+      const data = new Date().toLocaleDateString();
+
+      if (!descricao || isNaN(valor)) return;
+
+      gastos.push({ descricao, valor, categoria, data });
+      salvarLocal();
+      document.getElementById("descricao").value = '';
+      document.getElementById("valor").value = '';
+      atualizarPainel();
+    }
+
+    function atualizarPainel() {
+      const filtro = document.getElementById("filtroCategoria").value;
+      const tabela = document.getElementById("tabelaGastos");
+      tabela.innerHTML = '';
+      let total = 0;
+      let categoriaTotais = {};
+
+      gastos.forEach(g => {
+        if (filtro && g.categoria !== filtro) return;
+
+        const linha = `<tr>
+          <td>${g.data}</td>
+          <td>${g.descricao}</td>
+          <td>R$ ${g.valor.toFixed(2)}</td>
+          <td>${g.categoria}</td>
+        </tr>`;
+        tabela.innerHTML += linha;
+        total += g.valor;
+
+        if (!categoriaTotais[g.categoria]) categoriaTotais[g.categoria] = 0;
+        categoriaTotais[g.categoria] += g.valor;
+      });
+
+      document.getElementById("total").textContent = `Total: R$ ${total.toFixed(2)}`;
+      let resumo = "🧾 Totais por categoria:<br />";
+      for (const cat in categoriaTotais) {
+        resumo += `• ${cat}: R$ ${categoriaTotais[cat].toFixed(2)}<br />`;
+      }
+      document.getElementById("totaisPorCategoria").innerHTML = resumo;
+    }
+
+    function filtrarCategoria() {
+      atualizarPainel();
+    }
+
+    function salvarLocal() {
+      localStorage.setItem("gastosOlympus", JSON.stringify(gastos));
+    }
+
+    function carregarLocal() {
+      const dados = JSON.parse(localStorage.getItem("gastosOlympus"));
+      if (dados) {
+        gastos = dados;
+        atualizarPainel();
+      }
+    }
+
+    function exportarGastos() {
+      let texto = "📊 Relatório de gastos Olympus:\n";
+      gastos.forEach(g => {
+        texto += `${g.data} | ${g.descricao} | R$ ${g.valor.toFixed(2)} | ${g.categoria}\n`;
+      });
+      navigator.clipboard.writeText(texto).then(() => {
+        alert("✅ Relatório copiado para área de transferência!");
+      });
+    }
+
+    carregarLocal();
+  </script>
+</body>
+</html>

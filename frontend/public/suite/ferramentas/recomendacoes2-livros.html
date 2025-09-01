@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recomendações de Livros</title>
+  <style>
+    /* Estilo Olympus da rolagem */
+    body::-webkit-scrollbar {
+      width: 14px;
+    }
+    body::-webkit-scrollbar-track {
+      background: linear-gradient(to bottom, #f0f0f0, #eaeaea);
+    }
+    body::-webkit-scrollbar-thumb {
+      background: url('olympus-textura.jpg'); /* imagem local */
+      background-size: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    body {
+      scrollbar-color: #c4ad6d #f0f0f0;
+      scrollbar-width: thin;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f9f9f9, #ffffff);
+      color: #333;
+    }
+
+    header iframe {
+      width: 100%;
+      height: 60px;
+      border: none;
+    }
+    main {
+      max-width: 1100px;
+      margin: 80px auto 40px;
+      padding: 30px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #007BFF;
+      text-align: center;
+    }
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #busca {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    h2 {
+      margin-top: 30px;
+      color: #007BFF;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+    .livros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.07);
+      padding: 15px;
+      width: 250px;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card strong {
+      color: #007BFF;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      font-size: 0.5rem;
+      color: transparent;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+</head>
+<body>
+  <header>
+    <iframe src="./menu-superior.html"></iframe>
+  </header>
+
+  <main>
+    <h1>📚 Recomendações de Livros</h1>
+    <p>Explore títulos que impulsionam sua carreira, desenvolvimento pessoal e técnico.</p>
+    <input type="text" id="busca" placeholder="🔍 Buscar por título ou tema" oninput="filtrarLivros()" />
+
+    <h2>💼 Desenvolvimento Profissional</h2>
+    <div class="livros" data-categoria="profissional">
+      <div class="card"><strong>Mindset</strong> Carol Dweck</div>
+      <div class="card"><strong>Os 7 Hábitos das Pessoas Altamente Eficazes</strong> Stephen Covey</div>
+      <div class="card"><strong>O Poder do Hábito</strong> Charles Duhigg</div>
+      <div class="card"><strong>Deep Work</strong> Cal Newport</div>
+      <div class="card"><strong>Essencialismo</strong> Greg McKeown</div>
+      <div class="card"><strong>Trabalhe 4 Horas por Semana</strong> Timothy Ferriss</div>
+      <div class="card"><strong>Mais Rápido e Melhor</strong> Charles Duhigg</div>
+      <div class="card"><strong>O Jeito Harvard de Ser Feliz</strong> Shawn Achor</div>
+    </div>
+
+    <h2>🧠 Inteligência Emocional</h2>
+    <div class="livros" data-categoria="emocional">
+      <div class="card"><strong>Inteligência Emocional</strong> Daniel Goleman</div>
+      <div class="card"><strong>Agilidade Emocional</strong> Susan David</div>
+      <div class="card"><strong>A Coragem de Ser Imperfeito</strong> Brené Brown</div>
+      <div class="card"><strong>Comunicação Não-Violenta</strong> Marshall Rosenberg</div>
+      <div class="card"><strong>Emocionário</strong> Cristina Núñez</div>
+      <div class="card"><strong>Inteligência Emocional 2.0</strong> Travis Bradberry</div>
+      <div class="card"><strong>Gestão da Emoção</strong> Augusto Cury</div>
+      <div class="card"><strong>Não Acredite em Tudo Que Você Sente</strong> Robert Leahy</div>
+    </div>
+
+    <h2>📈 Liderança</h2>
+    <div class="livros" data-categoria="lideranca">
+      <div class="card"><strong>O Monge e o Executivo</strong> James Hunter</div>
+      <div class="card"><strong>Comece pelo Porquê</strong> Simon Sinek</div>
+      <div class="card"><strong>Liderança</strong> Daniel Goleman</div>
+      <div class="card"><strong>Pipeline de Liderança</strong> Ram Charan</div>
+      <div class="card"><strong>Empresas Feitas para Vencer</strong> Jim Collins</div>
+      <div class="card"><strong>Responsabilidade Extrema</strong> Jocko Willink</div>
+      <div class="card"><strong>Gestão de Alta Performance</strong> Andrew Grove</div>
+      <div class="card"><strong>O Lado Difícil das Situações Difíceis</strong> Ben Horowitz</div>
+    </div>
+
+    <h2>🔧 Técnicos e Setoriais</h2>
+    <div class="livros" data-categoria="tecnicos">
+      <div class="card"><strong>Design do Dia a Dia</strong> Donald Norman</div>
+      <div class="card"><strong>Scrum</strong> Jeff Sutherland</div>
+      <div class="card"><strong>Clean Code</strong> Robert C. Martin</div>
+      <div class="card"><strong>Manual de Instrumentação Cirúrgica</strong> Cooperbook</div>
+      <div class="card"><strong>Atlas de Anatomia Humana</strong> Frank Netter</div>
+      <div class="card"><strong>Vade Mecum Acadêmico</strong> Rideel</div>
+      <div class="card"><strong>Neurociência para Líderes</strong> Nikolaos Dimitriadis</div>
+      <div class="card"><strong>Manual de ECG</strong> Dale Dubin</div>
+    </div>
+
+    <h2>🌱 Desenvolvimento Pessoal</h2>
+    <div class="livros" data-categoria="pessoal">
+      <div class="card"><strong>O Poder do Agora</strong> Eckhart Tolle</div>
+      <div class="card"><strong>Em Busca de Sentido</strong> Viktor Frankl</div>
+      <div class="card"><strong>O Milagre da Manhã</strong> Hal Elrod</div>
+      <div class="card"><strong>O Segredo</strong> Rhonda Byrne</div>
+      <div class="card"><strong>A Arte da Felicidade</strong> Dalai Lama</div>
+      <div class="card"><strong>Pense e Enriqueça</strong> Napoleon Hill</div>
+      <div class="card"><strong>O Homem Mais Rico da Babilônia</strong> George S. Clason</div>
+      <div class="card"><strong>As Coisas Que Você Só Vê Quando Desacelera</strong> Haemin Sunim</div>
+    </div>
+
+    <!-- Seções adicionais omitidas para brevidade, mas devem ser inseridas aqui -->
+
+    <!-- 🧪 Funcionalidade oculta futura -->
+    <!--
+    <h2>📥 Leitura Online e Download</h2>
+    <div class="livros">
+      <div class="card">
+        <strong>Mindset</strong><br/>
+        <a href="https://playlivros.google.com/mindset" target="_blank">🔗 Ler Online</a><br/>
+        <a href="https://biblioteca.exemplo.com/download/mindset.pdf" download>⬇️ Baixar PDF</a>
+      </div>
+    </div>
+
+    <script>
+      /*
+      function salvarHistorico(titulo, link) {
+        let historico = JSON.parse(localStorage.getItem("livrosAcessados")) || [];
+        historico.push({ titulo, link, data: new Date().toLocaleString() });
+        localStorage.setItem("livrosAcessados", JSON.stringify(historico));
+      }
+
+      document.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => {
+          const titulo = a.parentElement.querySelector("strong")?.textContent || "Livro";
+          salvarHistorico(titulo, a.href);
+        });
+      });
+
+      function mostrarHistorico() {
+        let historico = JSON.parse(localStorage.getItem("livrosAcessados")) || [];
+        let texto = "📖 Histórico:\n";
+        historico.forEach((item, i) => {
+          texto += `${i + 1}. ${item.titulo} - ${item.link} (${item.data})\n`;
+        });
+        alert(texto);
+      }
+
+      // botão futuro: <button onclick="mostrarHistorico()">Ver Histórico</button>
+      */
+    </script>
+    -->
+  </main>
+
+  <footer>
+    Versão 1.1.1 - Scroll Olympus + Histórico Comentado - Atualizado em 21/07/2025
+  </footer>
+
+  <script>
+    function filtrarLivros() {
+      const termo = document.getElementById("busca").value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        const texto = card.textContent.toLowerCase();
+        card.style.display = texto.includes(termo) ? "block" : "none";
+      });
+    }
+  </script>
+</body>
+</html>

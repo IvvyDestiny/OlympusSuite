@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Administração - OlympusSuite</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { display: flex; margin: 0; font-family: Arial; }
+    .sidebar { width: 220px; background: #222; color: white; min-height: 100vh; }
+    .sidebar h2 { padding: 20px; }
+    .sidebar a { display: block; padding: 10px 20px; color: white; text-decoration: none; }
+    .sidebar a:hover { background: #444; }
+    .content { flex: 1; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Administração</h2>
+    <a href="./adm.html">Painel</a>
+    <a href="./HTML supervisorio.html">Supervisório</a>
+    <a href="../public/teste.html">Estoque</a>
+    <a href="./separacao.html">Separação</a>
+    <a href="../suite/conferencia.html">Conferência</a>
+    <a href="../suite/expedicao.html">Expedição</a>
+    <a href="../blog/adm-blog.html">Blog</a>
+
+  </div>
+  <div class="content">
+    <h1>Painel Administrativo</h1>
+    <section id="logs">
+      <h2>Logs de Acesso</h2>
+      <button onclick="loadLogs()">Recarregar</button>
+      <button onclick="clearLogs()">Limpar</button>
+      <table id="logTable">
+        <thead><tr><th>Registros</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+<script>
+async function loadLogs(){
+  const res = await fetch('../backend/read_logs.php');
+  const data = await res.json();
+  const tbody = document.querySelector("#logTable tbody");
+  tbody.innerHTML = "";
+  data.forEach(line => {
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${line}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+async function clearLogs(){
+  await fetch('../backend/clear_logs.php');
+  loadLogs();
+}
+loadLogs();
+</script>
+</body>
+</html>

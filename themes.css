@@ -1,3 +1,40 @@
+/*
+ * Olympus Suite — themes.css (UNIFICADO)
+ * Gerado automaticamente em 2025-08-30 16:18:59 UTC
+ * Política: manter login.css separado; consolidar demais temas aqui.
+ * OBS: Comentários explicativos foram adicionados para orientar manutenção.
+ */
+
+/* === Bloco herdado de /themes.css (raiz, original) ===
+   Mantido para compatibilidade. Ajuste variáveis aqui (cores, espaçamentos, tipografia). */
+:root{
+  /* Tema padrão */
+  --bg: #ffffff;
+  --text: #222222;
+  --accent: #0066cc;
+}
+
+[data-theme="dark"]{
+  --bg: #111;
+  --text: #eee;
+  --accent: #55aaff;
+}
+
+[data-theme="high-contrast"]{
+  --bg: #000;
+  --text: #fff;
+  --accent: #ff0;
+}
+
+/* 
+Notas de manutenção:
+- Este arquivo centraliza todos os temas.
+- Estruturas originais dos CSS antigos foram analisadas e documentadas.
+- Expansão de temas futuros pode ser feita aqui usando [data-theme="novo"].
+*/
+
+/* === Bloco herdado de /backend/styles/themes.css (original) ===
+   Reunido para evitar divergências entre áreas públicas/privadas. */
 /* 🎨 Estilo base para transições suaves */
 .navbar {
   transition: background-color 0.3s, color 0.3s;

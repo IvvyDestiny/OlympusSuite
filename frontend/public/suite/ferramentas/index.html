@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Suite de Ferramentas — Olympus</title>
+<link rel="stylesheet" href="/themes.css">
+<link rel="stylesheet" href="./css/ferramentas.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">OS</div>
+        <div>
+          <div class="title">Olympus Tools</div>
+          <div class="subtitle">Coleção profissional de utilitários — engenharia & produtividade</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <div class="search"><input id="search" placeholder="Procurar ferramenta..." /></div>
+        <button class="btn" id="openAll">Abrir tudo</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid" id="cards">
+        <!-- Cards injected by JS -->
+      </section>
+
+      <div class="footer">
+        <small>Design: engenharia | UX moderno • Gerado por Olympus Suite</small>
+      </div>
+    </main>
+  </div>
+
+<script src="./js/utils.js"></script>
+<script>
+const tools = [
+  {id:'calc', title:'Calculadora avançada', desc:'Científica com teclas rápidas e histórico', path:'Calc5oDia.html'},
+  {id:'timer', title:'Timer Pomodoro', desc:'Timer de foco cíclico com presets', path:'timer-foco.html'},
+  {id:'notes', title:'Bloco de notas', desc:'Notas rápidas com salvamento local', path:'notes.html'},
+  {id:'pwd', title:'Gerador de senhas', desc:'Crie senhas seguras e copie com um clique', path:'password-gen.html'},
+  {id:'json', title:'JSON ⇄ CSV', desc:'Conversor e validador de JSON / CSV', path:'json-csv.html'},
+  {id:'qr', title:'Gerador de QR Code', desc:'Gere códigos QR a partir de texto/URL', path:'qr.html'},
+  {id:'alex', title:'Alexandria (biblioteca)', desc:'Links e recomendações', path:'alexandria.html'},
+  {id:'finance', title:'Painel Financeiro (demo)', desc:'Visão financeira simples', path:'painel-financeiro2.html'}
+];
+
+function render(){
+  const container = document.getElementById('cards');
+  container.innerHTML = '';
+  tools.forEach(t=>{
+    const card = document.createElement('article');
+    card.className='card';
+    card.innerHTML = `<h3>${t.title}</h3><p>${t.desc}</p><div class="controls"><button onclick="Tools.go('./${t.path}')" class="btn small">Abrir</button><button class="btn ghost small" onclick="navigator.clipboard.writeText(window.location.href.replace(/[^/]*$/,'')+'${t.path}')">Link</button></div>`;
+    container.appendChild(card);
+  });
+}
+document.getElementById('openAll').addEventListener('click', ()=>{
+  tools.forEach(t=> window.open('./'+t.path,'_blank'));
+});
+document.getElementById('search').addEventListener('input',(e)=>{
+  const q = e.target.value.toLowerCase();
+  const filtered = tools.filter(t=> (t.title+t.desc).toLowerCase().includes(q));
+  const container = document.getElementById('cards');
+  container.innerHTML='';
+  filtered.forEach(t=>{
+    const card = document.createElement('article');
+    card.className='card';
+    card.innerHTML = `<h3>${t.title}</h3><p>${t.desc}</p><div class="controls"><button onclick="Tools.go('./${t.path}')" class="btn small">Abrir</button></div>`;
+    container.appendChild(card);
+  });
+});
+
+render();
+</script>
+</body>
+</html>

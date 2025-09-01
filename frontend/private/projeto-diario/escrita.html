@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>OlympusZeus.Diarinho</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+  <!-- 🔐 Tela de login -->
+  <div id="login-screen" style="display:none;">
+    <h2>🔐 Proteção ativada</h2>
+    <p>Digite sua senha para acessar o diário:</p>
+    <input type="password" id="password-input" placeholder="Senha">
+    <button onclick="checkPassword()">Entrar</button>
+  </div>
+
+  <!-- 📖 Diário interativo -->
+  <div id="diary-content" style="display:none;">
+    <div class="book">
+      <div class="page" id="front">
+        <h3>Nova Entrada</h3>
+        <input type="text" id="title" placeholder="Título da entrada">
+        <textarea id="content" rows="10" placeholder="Escreva aqui..."></textarea>
+        <div class="controls">
+          <button onclick="saveEntry()">Salvar</button>
+          <button onclick="flipPage()">Ver Últimas</button>
+          <button onclick="toggleDark()">🌙 Modo</button>
+        </div>
+      </div>
+
+      <div class="page back" id="back">
+        <h3>Entradas Anteriores</h3>
+        <div class="search-box">
+          <input type="text" id="search" placeholder="Buscar por palavra..." oninput="searchEntries()">
+        </div>
+        <div class="calendar">
+          <label for="dateSelect">Selecionar data:</label>
+          <select id="dateSelect" onchange="filterByDate()"></select>
+        </div>
+        <div id="entries"></div>
+        <div class="controls">
+          <button onclick="flipPage()">⬅ Voltar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📊 Estatísticas -->
+    <div class="stats">
+      <h4>📊 Minhas Estatísticas</h4>
+      <div class="stat-item">🗓️ Dias escritos: <span id="daysWritten">0</span></div>
+      <div class="stat-item">✍️ Palavras totais: <span id="wordCount">0</span></div>
+      <div class="stat-item">😊 Humor predominante: <span id="mood">---</span></div>
+    </div>
+
+
+  </div>
+
+  <!-- 📦 Scripts -->
+  <script>
+    let flipped = false;
+    const savedPassword = localStorage.getItem("diaryPassword");
+
+    window.onload = () => {
+      if (savedPassword) {
+        document.getElementById("login-screen").style.display = "block";
+      } else {
+        document.getElementById("diary-content").style.display = "block";
+      }
+      updateStats();
+    };
+
+    function checkPassword() {
+      const input = document.getElementById("password-input").value;
+      if (input === savedPassword) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("diary-content").style.display = "block";
+      } else {
+        alert("Senha incorreta!");
+      }
+    }
+
+    function setNewPassword() {
+      const newPass = document.getElementById("new-password").value;
+      if (!newPass) return alert("Digite uma nova senha.");
+      localStorage.setItem("diaryPassword", newPass);
+      alert("Senha definida com sucesso!");
+      location.reload();
+    }
+
+    function removePassword() {
+      localStorage.removeItem("diaryPassword");
+      alert("Senha removida.");
+      location.reload();
+    }
+
+    function flipPage() {
+      const front = document.getElementById('front');
+      const back = document.getElementById('back');
+      flipped = !flipped;
+      front.style.transform = flipped ? 'rotateY(-180deg)' : 'rotateY(0deg)';
+      back.style.transform = flipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+      if (flipped) loadEntries();
+    }
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+
+    function saveEntry() {
+      const title = document.getElementById('title').value.trim();
+      const content = document.getElementById('content').value.trim();
+      if (!title || !content) return alert("Preencha título e conteúdo!");
+
+      const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+      entries.push({ title, content, date: new Date().toLocaleDateString() });
+      localStorage.setItem('diaryEntries', JSON.stringify(entries));
+      document.getElementById('title').value = '';
+      document.getElementById('content').value = '';
+      updateStats();
+      alert("Entrada salva!");
+    }
+
+    function loadEntries() {
+      const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+      const container = document.getElementById('entries');
+      const dateSelect = document.getElementById('dateSelect');
+      container.innerHTML = '';
+      dateSelect.innerHTML = '<option value="">Todas</option>';
+      const dates = [...new Set(entries.map(e => e.date))];
+      dates.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        dateSelect.appendChild(opt);
+      });
+      renderEntries(entries);
+    }
+
+    function renderEntries(entries) {
+      const container = document.getElementById('entries');
+      container.innerHTML = '';
+      entries.slice(-10).reverse().forEach(entry => {
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>${entry.date} - ${entry.title}</strong><p>${entry.content}</p><hr>`;
+        container.appendChild(div);
+      });
+    }
+
+    function searchEntries() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+      const filtered = entries.filter(e =>
+        e.content.toLowerCase().includes(query) || e.title.toLowerCase().includes(query)
+      );
+      renderEntries(filtered);
+    }
+
+    function filterByDate() {
+      const selected = document.getElementById('dateSelect').value;
+      const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+      const filtered = selected ? entries.filter(e => e.date === selected) : entries;
+      renderEntries(filtered);
+    }
+
+    function updateStats() {
+      const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+      document.getElementById('daysWritten').textContent = entries.length;
+      const totalWords = entries.reduce((sum, e) => sum + e.content.split(/\s+/).length, 0);
+      document.getElementById('wordCount').textContent = totalWords;
+
+      const moodWords = { feliz: 0, triste: 0, ansioso: 0, calmo: 0, reflexivo: 0 };
+      entries.forEach(e => {
+        const text = e.content.toLowerCase();
+        for (let mood in moodWords) {
+          if (text.includes(mood)) moodWords[mood]++;
+        }
+      });
+
+      const predominant = Object.entries(moodWords).sort((a, b) => b[1] - a[1])[0];
+      document.getElementById('mood').textContent = predominant[1] > 0 ? predominant[0] : '---';
+    }
+  </script>
+</body>
+</html>

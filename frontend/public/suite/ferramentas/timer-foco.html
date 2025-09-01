@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Timer de Foco — Olympus</title>
+<link rel="stylesheet" href="/themes.css"><link rel="stylesheet" href="./css/ferramentas.css"></head><body>
+<div class="container">
+  <header class="header"><div class="brand"><div class="logo">TM</div><div><div class="title">Timer de Foco</div><div class="subtitle">Pomodoro com presets e histórico</div></div></div><div><button class="btn" onclick="Tools.go('index.html')">Voltar</button></div></header>
+  <main>
+    <div class="tool-hero panel"><div style="flex:1"><h2>Pomodoro</h2><p class="muted">Preset 25/5 — ajuste tempos conforme necessidade.</p></div></div>
+    <div class="tool-body">
+      <section>
+        <div class="panel" style="text-align:center">
+          <div style="font-size:3rem;font-weight:700" id="time">25:00</div>
+          <div style="margin-top:.5rem">
+            <button class="btn" id="start">Iniciar</button>
+            <button class="btn ghost" id="pause">Pausar</button>
+            <button class="btn ghost" id="reset">Reset</button>
+          </div>
+          <div style="margin-top:.75rem" class="muted">Sessões concluídas: <span id="count">0</span></div>
+        </div>
+      </section>
+      <aside class="panel"><div class="muted">Configurações</div>
+        <div class="kv"><label>Foco (min)</label><input id="focus" type="number" value="25" class="input"></div>
+        <div class="kv"><label>Descanso (min)</label><input id="break" type="number" value="5" class="input"></div>
+      </aside>
+    </div>
+  </main>
+</div>
+<script src="./js/utils.js"></script>
+<script>
+let timerId=null; let remaining=25*60; let mode='focus'; let completed=0;
+function fmt(s){ const m=Math.floor(s/60); const sec=s%60; return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0') }
+function render(){ document.getElementById('time').innerText = fmt(remaining); document.getElementById('count').innerText = completed; }
+function start(){ if(timerId) return; timerId=setInterval(()=>{ remaining--; if(remaining<=0){ if(mode==='focus'){ completed++; mode='break'; remaining = Number(document.getElementById('break').value)*60;} else { mode='focus'; remaining = Number(document.getElementById('focus').value)*60;} render() } render(); },1000) }
+function pause(){ if(timerId){ clearInterval(timerId); timerId=null } }
+function reset(){ pause(); mode='focus'; remaining = Number(document.getElementById('focus').value)*60; render(); }
+document.getElementById('start').addEventListener('click', start);
+document.getElementById('pause').addEventListener('click', pause);
+document.getElementById('reset').addEventListener('click', reset);
+document.getElementById('focus').addEventListener('change', ()=>{ remaining = Number(document.getElementById('focus').value)*60; render(); });
+render();
+</script>
+</body></html>

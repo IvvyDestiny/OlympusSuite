@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Supervisório</title>
+
+  <link rel="stylesheet" href="../../backend/css/separacao.css" />
+  <script src="../../backend/libs/charts.min.js"></script>
+  <script src="../../backend/libs/xlsx.full.min.js"></script>
+  <script src="../../backend/js/supervisorio.js" defer></script>
+</head>
+<body style="padding-bottom:120px;">
+
+  <h1>Painel Supervisório</h1>
+
+  <div class="link-container">
+    <a href="https://view.monday.com/boards/8182100717" class="link-box blue" target="_blank">Solicitações</a>
+    <a href="https://view.monday.com/boards/8194722554" class="link-box blue-sky" target="_blank">Embaladores</a>
+    <a href="https://view.monday.com/boards/8195073847" class="link-box purple" target="_blank">Quitadores</a>
+    <a href="https://view.monday.com/boards/7705321218" class="link-box green" target="_blank">Progresso</a>
+    <a href="https://view.monday.com/boards/5670006246" class="link-box grey11" target="_blank">Metas</a>
+  </div>
+
+  <div class="iframe-container">
+    <iframe src="https://view.monday.com/embed/7705321218-27f807d7a7092d4d342cdefb4631358a?r=use1"></iframe>
+    <iframe src="https://view.monday.com/embed/5670006246-0a26461f92647c355094a4f877a18377?r=use1"></iframe>
+  </div>
+
+  <div class="upload">
+    <h2>Importar Excel de Faróis</h2>
+    <input type="file" id="excelInput" accept=".xlsx" />
+    <div id="mensagem"></div>
+  </div>
+
+  <div style="max-width: 600px; margin-bottom: 50px;">
+    <canvas id="graficoFarol"></canvas>
+  </div>
+
+  <div class="calculadora">
+    <h2>Meta de Erros por Operador</h2>
+    <input type="number" id="total" placeholder="Total de Conclusões" />
+    <input type="number" id="erros" placeholder="Número de Erros" />
+    <br />
+    <button onclick="calcularMetaErros()">Verificar Meta</button>
+    <div id="resultado"></div>
+  </div>
+
+  <button onclick="abrirRemoteDesktopApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 1rem; background-color: #2980b9; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">🔗 Conectar Área de Trabalho Remota</button>
+  <script>
+    function abrirRemoteDesktopApp() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      if (/windows/i.test(userAgent)) {
+        const link = document.createElement('a');
+        link.href = 'almoxarifado.rdp';
+        link.download = 'almoxarifado.rdp';
+        link.click();
+
+        setTimeout(() => {
+          alert('Se o arquivo não abrir automaticamente, tente usar o aplicativo Remote Desktop ou Remote Desktop 8 disponível na Microsoft Store.');
+        }, 1000);
+      } else if (/macintosh|mac os x/i.test(userAgent)) {
+        alert('Para abrir o Remote Desktop no iOS, use o aplicativo Microsoft Remote Desktop disponível na App Store.');
+      } else {
+        alert('Plataforma não suportada para abrir o Remote Desktop.');
+      }
+    }
+  </script>
+
+<!-- Rodapé Corporativo Fixo -->
+<footer style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f2f2f2;
+  color: #4a4a4a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  padding: 20px 10px;
+  text-align: center;
+  border-top: 1px solid #dcdcdc;
+  z-index: 9999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <p style="margin: 0;">&copy; 2025 OlympusZeus Suite. Todos os direitos reservados.</p>
+    <p style="margin: 5px 0;">Desenvolvido para soluções empresariais de alto desempenho.</p>
+    <a href="../public/extra.html" style="
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #4a4a4a;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    " onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#4a4a4a'">
+      Acessar Extra
+    </a>
+  </div>
+</footer>
+</body>
+</html>

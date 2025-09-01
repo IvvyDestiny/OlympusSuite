@@ -1,0 +1,146 @@
+:root {
+    --bg: #fdf6e3;
+    --text: #333;
+    --card: #fff;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+body.dark {
+    --bg: #1e1e1e;
+    --text: #eee;
+    --card: #2c2c2c;
+    --shadow: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s, color 0.3s;
+    line-height: 1.6;
+}
+
+/* Layout Geral */
+#login-screen,
+#diary-content {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Livro e Páginas */
+.book {
+    perspective: 1500px;
+    max-width: 800px;
+    margin: 2rem auto;
+    height: 650px;
+    position: relative;
+}
+
+.page {
+    background: var(--card);
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--shadow);
+    padding: 2rem;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+    position: absolute;
+    width: 100%;
+    backface-visibility: hidden;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+    box-sizing: border-box;
+}
+
+.page.back {
+    transform: rotateY(180deg);
+}
+
+/* Controles */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Estatísticas e configurações */
+.stats,
+.password-settings {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: var(--card);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--shadow);
+}
+
+.stat-item {
+    margin-bottom: 1rem;
+}
+
+/* Campos de entrada */
+textarea,
+input {
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    background: var(--card);
+    color: var(--text);
+    transition: border-color 0.3s;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+/* Botões */
+button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #eee;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #ddd;
+}
+
+/* Busca e calendário */
+.search-box,
+.calendar {
+    margin-top: 1rem;
+}
+
+.calendar select {
+    padding: 0.3rem;
+    font-size: 1rem;
+}
+
+/* Tela de login */
+#login-screen {
+    max-width: 400px;
+    margin: 5rem auto;
+    background: var(--card);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px var(--shadow);
+    text-align: center;
+}

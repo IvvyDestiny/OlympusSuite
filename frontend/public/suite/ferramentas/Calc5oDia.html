@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora do 5º Dia Útil</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(to right, #e0e0e0, #f9f9f9);
+      color: #333;
+    }
+    header iframe {
+      width: 100%;
+      height: 60px;
+      border: none;
+      display: block;
+    }
+    .container {
+      max-width: 500px;
+      margin: 80px auto 40px;
+      background-color: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .info {
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+    button {
+      margin-top: 25px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background: linear-gradient(to right, #007BFF, #00A1FF);
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: linear-gradient(to right, #0056b3, #0083cc);
+    }
+    /* Rodapé invisível com versionamento */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      font-size: 0.5rem;
+      color: transparent;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Menu superior importado via iframe -->
+    <iframe src="./menu-superior.html"></iframe>
+  </header>
+
+  <main class="container">
+    <h1>Calculadora do 5º Dia Útil</h1>
+    <div class="info" id="resultado">Clique abaixo para calcular</div>
+    <button onclick="calcularDiaUtil()">Calcular Próximo Pagamento</button>
+  </main>
+
+  <footer>
+    Versão 1.0.3 - Atualizado em 21/07/2025
+  </footer>
+
+  <script>
+    function encontrarQuintoDiaUtil(ano, mes) {
+      let diaUtilCont = 0;
+      for (let dia = 1; dia <= 31; dia++) {
+        const data = new Date(ano, mes, dia);
+        if (data.getMonth() !== mes) break;
+        const diaSemana = data.getDay();
+        if (diaSemana !== 0 && diaSemana !== 6) {
+          diaUtilCont++;
+          if (diaUtilCont === 5) return data;
+        }
+      }
+      return null;
+    }
+
+    function calcularDiaUtil() {
+      const hoje = new Date();
+      let ano = hoje.getFullYear();
+      let mes = hoje.getMonth();
+      let quintoDia = encontrarQuintoDiaUtil(ano, mes);
+
+      // Se já passou, pula para o mês seguinte
+      if (hoje > quintoDia) {
+        mes++;
+        if (mes > 11) {
+          mes = 0;
+          ano++;
+        }
+        quintoDia = encontrarQuintoDiaUtil(ano, mes);
+      }
+
+      let diaPagamento = new Date(quintoDia);
+      if (quintoDia.getDay() === 6) {
+        diaPagamento.setDate(diaPagamento.getDate() - 1); // antecipa pra sexta
+      }
+
+      const diffDias = Math.ceil((diaPagamento - hoje) / (1000 * 60 * 60 * 24));
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      const pagamentoFormatado = diaPagamento.toLocaleDateString('pt-BR', options);
+
+      document.getElementById("resultado").innerHTML = `
+        📆 Próximo 5º dia útil será em <strong>${pagamentoFormatado}</strong>.<br />
+        ⏳ Faltam <strong>${diffDias}</strong> dia(s).<br />
+        💡 Pagamento entre <strong>5h e 12h de sexta-feira</strong> se cair no sábado.
+      `;
+    }
+  </script>
+</body>
+</html>

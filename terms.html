@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Termos, Privacidade e Usabilidade</title>
-  <link rel="stylesheet" href="themes.css"> <!-- Link para seu CSS -->
-  
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Temas personalizados -->
+  <link href="/themes.css" rel="stylesheet" />
+  <link href="../styles.css" rel="stylesheet" />
+
+</head>
+
+<body style="padding-bottom:120px;">
+  <!-- Menu será injetado aqui -->
   <div id="menu-container"></div>
-<script>
-  fetch("menu.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("menu-container").innerHTML = html;
-    });
-</script>
-  
+
   
 </head>
-<body>
+<body style="padding-bottom:120px;">
   <header>
     <h1>Termos de Uso, Privacidade e Usabilidade</h1>
   </header>
@@ -33,29 +35,126 @@
       </ul>
     </section>
 
-    <section id="privacidade">
-      <h2>🔒 Política de Privacidade</h2>
-      <p>Levamos sua privacidade a sério. Veja como tratamos seus dados:</p>
-      <ul>
-        <li>Coletamos apenas informações necessárias para melhorar sua experiência.</li>
-        <li>Seus dados não são compartilhados com terceiros sem seu consentimento.</li>
-        <li>Você pode solicitar a exclusão de seus dados a qualquer momento.</li>
-      </ul>
-    </section>
+<!-- Seção de Política de Privacidade -->
+<section id="privacidade">
+  <h2>🔒 Política de Privacidade</h2>
+  <p>Levamos sua privacidade a sério. Veja como tratamos seus dados:</p>
+  <ul>
+    <li>Coletamos apenas informações necessárias para melhorar sua experiência.</li>
+    <li>Seus dados não são compartilhados com terceiros sem seu consentimento.</li>
+    
+    <!-- Link visível com e-mail mascarado -->
+    <li>
+      Você pode solicitar a exclusão de seus dados a qualquer momento no
+      <!-- O e-mail exibido é falso, mas o clique chama a função que envia para o e-mail real -->
+      <a href="#" onclick="enviarEmail()">olympus@olympuszeus.com.br</a>
+    </li>
+  </ul>
+</section>
+
+<script>
+  // Função que será chamada ao clicar no e-mail falso
+  function enviarEmail() {
+    // E-mail real para onde a mensagem será enviada
+    const destinatarioReal = "olympus@outlook.com.br";
+    
+    // Assunto do e-mail
+    const assunto = "Solicitação de remoção de dados";
+    
+    // Corpo do e-mail com o texto oculto que será enviado
+    const corpo = encodeURIComponent(`Olá. Quero remover meus dados. Meu nome é:\nOs dados estão no link:\nTal contexto:`);
+    
+    // Redireciona o usuário para o cliente de e-mail padrão com os dados preenchidos
+    // Isso abre uma nova janela de e-mail com destinatário, assunto e corpo já configurados
+    window.location.href = `mailto:${destinatarioReal}?subject=${assunto}&body=${corpo}`;
+  }
+</script>
 
     <section id="usabilidade">
       <h2>🖥️ Usabilidade</h2>
       <p>Nosso compromisso é oferecer uma experiência intuitiva e acessível:</p>
       <ul>
-        <li>Design responsivo para todos os dispositivos.</li>
-        <li>Interface clara e navegação simplificada.</li>
+        <li>Foco em Design responsivo para todos os dispositivos.</li>
+        <li>Interface moderna e navegação simplificada.</li>
         <li>Compatibilidade com leitores de tela e acessibilidade para todos os usuários.</li>
       </ul>
     </section>
   </main>
+  </div>
+  <!-- 4. Script para injetar menu e aplicar 
+  
+  
+  <!-- Script para injetar menu e aplicar tema -->
+<script>
+  fetch("../../menu.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("menu-container").innerHTML = html;
+      
+      setTimeout(() => {
+        const temaSalvo = localStorage.getItem("theme") || "cyber-blue";
+        const menu = document.getElementById("mainMenu");
+        const selector = document.getElementById("themeSelector");
+        
+        if (menu) {
+          menu.classList.add(temaSalvo);
+          document.body.classList.add(temaSalvo);
+        }
+        
+        if (selector) {
+          selector.value = temaSalvo;
+          selector.onchange = () => {
+            const novoTema = selector.value;
+            const temas = ["cyber-blue", "dark-neon", "pink-loli", "red-fox"];
+            document.body.classList.remove(...temas);
+            menu.classList.remove(...temas);
+            document.body.classList.add(novoTema);
+            menu.classList.add(novoTema);
+            localStorage.setItem("theme", novoTema);
+          };
+        }
+      }, 50);
+    });
+</script>
 
-  <footer>
-    <p>&copy; 2025 Ivan Corp. Todos os direitos reservados.</p>
-  </footer>
+<!-- Rodapé Corporativo Fixo -->
+<footer style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f2f2f2;
+  color: #4a4a4a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  padding: 20px 10px;
+  text-align: center;
+  border-top: 1px solid #dcdcdc;
+  z-index: 9999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <p style="margin: 0;">&copy; 2025 OlympusZeus Suite. Todos os direitos reservados.</p>
+    <p style="margin: 5px 0;">Desenvolvido para soluções empresariais de alto desempenho.</p>
+    <a href="./extra.html" style="
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #4a4a4a;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    " onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#4a4a4a'">
+      Acessar Extra
+    </a>
+  </div>
+</footer>
+
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

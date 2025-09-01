@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>QR Code — Olympus</title>
+<link rel="stylesheet" href="/themes.css"><link rel="stylesheet" href="./css/ferramentas.css"></head><body>
+<div class="container">
+<header class="header"><div class="brand"><div class="logo">QR</div><div><div class="title">Gerador de QR</div><div class="subtitle">Encode texto/URL para QR (offline)</div></div></div><div><button class="btn" onclick="Tools.go('index.html')">Voltar</button></div></header>
+<main>
+  <div class="tool-hero panel"><div style="flex:1"><h2>QR Offline</h2><p class="muted">Gera imagem QR sem depender da rede.</p></div></div>
+  <div class="tool-body">
+    <section>
+      <div class="panel">
+        <input id="txt" class="input" placeholder="Coloque URL ou texto aqui">
+        <div style="margin-top:.5rem;display:flex;gap:.5rem"><button class="btn" id="gen">Gerar</button><button class="btn ghost" id="dl">Download</button></div>
+        <div style="margin-top:.75rem"><img id="qr" alt="qr" style="max-width:100%"></div>
+      </div>
+    </section>
+    <aside class="panel"><div class="muted">Export</div><div style="margin-top:.5rem;color:var(--muted)">Baixe o QR como PNG.</div></aside>
+  </div>
+</main>
+</div>
+<script src="./js/utils.js"></script>
+<script src="./js/qrcode-mini.js"></script>
+<script>
+document.getElementById('gen').addEventListener('click', ()=>{
+  const v=document.getElementById('txt').value.trim(); if(!v) return alert('Insira texto ou URL');
+  const data = MinQR.make(v, 512); document.getElementById('qr').src = data;
+});
+document.getElementById('dl').addEventListener('click', ()=>{
+  const src = document.getElementById('qr').src; if(!src) return alert('Gere antes');
+  const a = document.createElement('a'); a.href=src; a.download='qrcode.png'; a.click();
+});
+</script>
+</body></html>

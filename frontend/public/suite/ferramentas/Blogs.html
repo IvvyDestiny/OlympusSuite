@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DestinyServicesBR – Blog</title>
+  <style>
+    /* Reset mínimo */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4fdf5;
+      color: #1c4620;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    header h1 { margin-bottom: .5rem; }
+    header p  { font-size: 1.1rem; opacity: .9; }
+
+    nav {
+      background-color: #4caf50;
+      text-align: center;
+      padding: .75rem;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1024px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    aside#toc {
+      flex: 0 0 220px;
+      position: sticky;
+      top: 1rem;
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-right: 2rem;
+      height: fit-content;
+    }
+    aside#toc h2 {
+      font-size: 1.1rem;
+      margin-bottom: .5rem;
+      color: #2e7d32;
+    }
+    aside#toc ul {
+      list-style: none;
+    }
+    aside#toc li + li {
+      margin-top: .5rem;
+    }
+    aside#toc a {
+      text-decoration: none;
+      color: #1c4620;
+      font-size: .95rem;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .post-list {
+      list-style: none;
+      padding: 0;
+    }
+    .post-list li {
+      background: #fff;
+      border-left: 6px solid #48b25c;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .post-list a {
+      text-decoration: none;
+      color: #2e7d32;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .post-list time {
+      display: block;
+      margin-top: .5rem;
+      font-size: .9rem;
+      color: #555;
+    }
+
+    .step {
+      background: #fff;
+      border-left: 6px solid #48b25c;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .step h2 {
+      color: #2e7d32;
+      margin-bottom: .75rem;
+    }
+    .step img {
+      display: block;
+      max-width: 100%;
+      margin: 1rem auto;
+      border-radius: 6px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    }
+    .step p + p {
+      margin-top: 1rem;
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #48b25c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    footer {
+      background-color: #2e7d32;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header id="site-header"></header>
+  <nav id="site-nav"></nav>
+
+  <div class="container">
+    <aside id="toc"></aside>
+    <main id="content"></main>
+  </div>
+
+  <button id="back-to-top" title="Voltar ao topo">↑</button>
+  <footer id="site-footer"></footer>
+
+  <script>
+    // ====== AQUI VOCÊ ADICIONA NOVOS POSTS ======
+    const blogPosts = [
+      {
+        slug: "posicionamento-tecnico-mao",
+        title: "Posicionamento Técnico da Mão",
+        subtitle: "Guia prático para uso de mouse em contexto técnico",
+        date: "01/07/2025",
+        imgsPath: "./blog/imgs/",
+        sections: [
+          {
+            id: "problema",
+            title: "Identificando o Problema",
+            paragraphs: [
+              "Em muitas inspeções e calibrações, técnicos precisam virar o mouse para acessar LEDs, circuitos e conectores na parte inferior. A postura convencional não oferece estabilidade nem visibilidade suficientes.",
+              "Isso resulta em leituras imprecisas dos sensores, risco de contaminação do circuito exposto e desconforto ergonômico."
+            ],
+            img: "img-1.png",
+            alt: "Postura incorreta durante inspeção técnica com mouse"
+          },
+          {
+            id: "preparacao",
+            title: "Passo 1: Preparação do dispositivo",
+            paragraphs: [
+              "Desligue o mouse e coloque-o com a base para cima sobre uma superfície estável e limpa.",
+              "Garanta que a área esteja livre de poeira e interferências elétricas."
+            ],
+            img: "img-2.png",
+            alt: "Mouse preparado sobre a superfície"
+          },
+          {
+            id: "postura",
+            title: "Passo 2: Postura correta da mão técnica",
+            paragraphs: [
+              "Com a palma voltada para cima, acomode os dedos indicador, médio, anelar e mínimo sob o corpo do mouse.",
+              "O polegar deve permanecer visível, fornecendo apoio lateral ao dispositivo."
+            ],
+            img: "img-3.png",
+            alt: "Postura correta da mão"
+          },
+          {
+            id: "estabilizacao",
+            title: "Passo 3: Estabilização e manuseio",
+            paragraphs: [
+              "Use o polegar para manter o mouse firme, enquanto os demais dedos suportam o peso por baixo.",
+              "Essa configuração maximiza o controle e evita tremores durante a inspeção."
+            ],
+            img: "img-4.png",
+            alt: "Estabilização do dispositivo com a mão"
+          },
+          {
+            id: "dica",
+            title: "Dica DestinyServicesBR",
+            paragraphs: [
+              "Profissionais que adotam essa técnica ganham em precisão, conforto e mantêm padrões ergonômicos elevados."
+            ],
+            img: "img-5.png",
+            alt: "Profissional realizando inspeção técnica"
+          }
+        ],
+        footerText: "© 2025 DestinyServicesBR - Todos os direitos reservados."
+      }
+
+      // -> Para criar um novo blog, basta duplicar este objeto,
+      //    mudar o slug, title, date, imagens e sections.
+    ];
+
+    // ===== FUNÇÕES DE GERAÇÃO =====
+    function getQueryParam(param) {
+      const url = new URL(window.location);
+      return url.searchParams.get(param);
+    }
+
+    function buildHeader(post) {
+      const h = document.getElementById("site-header");
+      h.innerHTML = post
+        ? `<h1>${post.title}</h1><p>${post.subtitle}</p>`
+        : `<h1>Blog DestinyServicesBR</h1><p>Conteúdos técnicos e tutoriais</p>`;
+    }
+
+    function buildNav(post) {
+      const nav = document.getElementById("site-nav");
+      const items = post
+        ? blogPosts.map(p => `<a href="?post=${p.slug}">${p.title}</a>`)
+        : blogPosts.map(p => `<a href="?post=${p.slug}">${p.title}</a>`);
+      nav.innerHTML = items.join("");
+    }
+
+    function buildTOC(sections) {
+      const toc = document.getElementById("toc");
+      if (!sections) { toc.style.display = "none"; return; }
+      toc.style.display = "block";
+      toc.innerHTML = `<h2>Sumário</h2><ul>` +
+        sections.map(s => `<li><a href="#${s.id}">${s.title}</a></li>`).join("") +
+        `</ul>`;
+    }
+
+    function buildIndex() {
+      document.getElementById("toc").style.display = "none";
+      const main = document.getElementById("content");
+      main.innerHTML = `<ul class="post-list">` +
+        blogPosts.map(p => `
+          <li>
+            <a href="?post=${p.slug}">${p.title}</a>
+            <time>Publicado em: ${p.date}</time>
+          </li>
+        `).join("") +
+        `</ul>`;
+      document.getElementById("site-footer").textContent = "";
+    }
+
+    function buildPost(post) {
+      buildHeader(post);
+      buildNav(post);
+      buildTOC(post.sections);
+
+      const main = document.getElementById("content");
+      main.innerHTML = post.sections.map(sec => `
+        <section id="${sec.id}" class="step">
+          <h2>${sec.title}</h2>
+          <img src="${post.imgsPath + sec.img}" alt="${sec.alt}">
+          ${sec.paragraphs.map(p => `<p>${p}</p>`).join("")}
+        </section>
+      `).join("");
+
+      document.getElementById("site-footer").textContent = post.footerText;
+    }
+
+    function initBackToTop() {
+      const btn = document.getElementById("back-to-top");
+      window.addEventListener("scroll", () => {
+        btn.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      btn.addEventListener("click", () =>
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      );
+    }
+
+    // ===== INICIALIZAÇÃO =====
+    document.addEventListener("DOMContentLoaded", () => {
+      const slug = getQueryParam("post");
+      if (slug) {
+        const post = blogPosts.find(p => p.slug === slug);
+        if (post) buildPost(post);
+        else buildIndex();
+      } else {
+        buildHeader(null);
+        buildNav(null);
+        buildIndex();
+      }
+      initBackToTop();
+    });
+  </script>
+
+</body>
+</html>

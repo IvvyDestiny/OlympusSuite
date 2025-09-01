@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>JSON ⇄ CSV — Olympus</title>
+<link rel="stylesheet" href="/themes.css"><link rel="stylesheet" href="./css/ferramentas.css"></head><body>
+<div class="container">
+  <header class="header"><div class="brand"><div class="logo">JC</div><div><div class="title">JSON ⇄ CSV</div><div class="subtitle">Conversor e validador</div></div></div><div><button class="btn" onclick="Tools.go('index.html')">Voltar</button></div></header>
+  <main>
+    <div class="tool-hero panel"><div style="flex:1"><h2>Conversor</h2><p class="muted">Cole JSON ou CSV e converta.</p></div></div>
+    <div class="tool-body">
+      <section>
+        <div class="panel">
+          <select id="mode" class="input"><option value="j2c">JSON → CSV</option><option value="c2j">CSV → JSON</option></select>
+          <textarea id="data" placeholder="Cole aqui..."></textarea>
+          <div style="margin-top:.5rem;display:flex;gap:.5rem"><button class="btn" id="go">Converter</button><button class="btn ghost" id="copy">Copiar Saída</button></div>
+          <div style="margin-top:.5rem"><textarea id="out" readonly></textarea></div>
+        </div>
+      </section>
+      <aside class="panel"><div class="muted">Dicas</div><ul style="color:var(--muted)"><li>JSON deve ser array de objetos</li><li>CSV: separador vírgula ou ponto-e-vírgula</li></ul></aside>
+    </div>
+  </main>
+</div>
+<script src="./js/utils.js"></script>
+<script>
+function jsonToCsv(json){
+  try{ const arr = JSON.parse(json); if(!Array.isArray(arr)) throw 'JSON precisa ser array'; const cols = Array.from(new Set(arr.flatMap(o=>Object.keys(o)))); const rows = [cols.join(',')].concat(arr.map(o=>cols.map(c=>('"'+(o[c]??'')+'"')).join(','))); return rows.join('\n'); }catch(e){ throw e }
+}
+function csvToJson(csv){
+  try{ const lines = csv.trim().split(/\r?\n/); const sep = lines[0].includes(';')?';':','; const cols = lines[0].split(sep).map(s=>s.replace(/^"|"$/g,'')); return JSON.stringify(lines.slice(1).map(l=>{ const vals = l.split(sep).map(s=>s.replace(/^"|"$/g,'')); const obj={}; cols.forEach((c,i)=>obj[c]=vals[i]??''); return obj }), null, 2); }catch(e){ throw e }
+}
+document.getElementById('go').addEventListener('click', ()=>{
+  const mode=document.getElementById('mode').value; const data=document.getElementById('data').value;
+  try{ let out=''; if(mode==='j2c') out=jsonToCsv(data); else out=csvToJson(data); document.getElementById('out').value = out }catch(e){ alert('Erro: '+e) }
+});
+document.getElementById('copy').addEventListener('click', async ()=>{ const ok = await Tools.copy(document.getElementById('out').value); alert(ok ? 'Copiado' : 'Falha ao copiar') });
+</script>
+</body></html>
